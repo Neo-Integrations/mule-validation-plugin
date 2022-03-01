@@ -1,0 +1,96 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Validate Mule Code Rule",
+  "description": "This is the structure of each Mule Code validation Rule",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["ruleId", "description", "severity", "location"],
+    "properties": {
+      "ruleId": { "type": "string", "description":  "Unique identifier of the rule"},
+      "description": { "type": "string", "description":  "Brief description of the rule"},
+      "active": { "type": "boolean", "description":  "Default is 'true'. If the value is is 'false' the rule will be skipped"},
+      "severity": {
+        "type": "string",
+        "description": "The value of this property will impact the build status. If the value is 'MINOR' then even when the rule validation fail, the build will not be failed. But, if the value of this property is either 'MAJOR' or 'CRITICAL' then build will fail if the rule validation fail",
+        "enum": [
+          "MINOR",
+          "MAJOR",
+          "CRITICAL"
+        ]
+      },
+      "nodeSpecification": {
+        "type": "object",
+        "description": "This object is required for either 'XML' or 'JSON' file parsing rule where you would like to pass node selection criteria. If there is no criteria required, this node can be removed. This not is ignored for 'RAML' validation rule ",
+        "required": ["nodeReference"],
+        "properties": {
+          "nodeReference": { "type": "string", "description": "This field is mandatory when node selection criteria is mentioned. When 'xPathNodeReference == false', the value of this field will contain a name of an XML tag (schema:name format). However, when the field 'xPathNodeReference=true', the field will have a valid xml XPATH expression expression to be validated against the selected files." },
+          "xPathNodeReference": { "type": "boolean", "description": "If the value is 'true' then 'nodeReference' has an 'XPATH' expression"},
+          "xPathReturnType": {
+            "type": "string",
+            "description": "When the 'xPathNodeReference' is 'true', the field can determine the output type of the XPATH expression. Supported values are 'BOOLEAN' and 'NODESET'",
+            "enum": [
+              "BOOLEAN",
+              "NODESET"
+            ]
+          },
+          "attributeName": { "type": "string", "description": "Name of an attribute which will be extracted from the selected nodes. For 'XML' file this field will contain xml node attribute name while for a 'JSON' file, the field will contain a json 'filed' "},
+          "attributeValue": { "type": "string", "description": "Expected value for the attribute mentioned in 'attributeName' or extracted as part of the 'nodeReference'"},
+          "attributeOperation": {
+            "type": "string",
+            "description": "This operation signify what operation to apply to match the extracted value with the `attributeValue`. possible values are `EQUALS`, `MATCHES`, `NOT_MATCHES`, `CONTAINS`, `COUNT`",
+            "enum": ["EQUALS", "MATCHES", "NOT_MATCHES", "CONTAINS", "COUNT"]
+          }
+        },
+        "if": {
+          "properties": {
+            "xPathNodeReference": { "const": true }
+          }
+        },
+        "then": {
+          "required": ["nodeReference"]
+        }
+      },
+      "aggregation": {
+        "type": "object",
+        "required": ["nodeCardinality"],
+        "properties": {
+          "nodeCardinality": {
+            "type": "string",
+            "enum": ["ONLY_ONE", "AT_LEAST_ONE", "MORE_THAN_ONE", "NONE", "LESS_THAN", "MORE_THAN", "ALL"]
+          },
+          "limit": { "type": "number" }
+        }
+      },
+      "location": {
+        "type": "object",
+        "required": ["path", "inlcudeFileNamePattern"],
+        "properties": {
+          "path": { "type": "string" },
+          "inlcudeFileNamePattern": { "type": "string" },
+          "excludeFileNamePattern": { "type": "string" }
+        }
+      },
+      "ramlRule": {
+        "type": "object",
+        "properties": {
+          "validateRaml": { "type": "boolean"},
+          "validateTitle": { "type": "boolean"},
+          "validateDescription": { "type": "boolean"},
+          "validateDocumentation": { "type": "boolean"},
+          "validateSecuritySchemes": { "type": "boolean"},
+          "validateOAuth2Scheme": { "type": "boolean"},
+          "validateClientIdEnforcementScheme": { "type": "boolean"},
+          "validateResponseBody": { "type": "boolean"},
+          "validateRequestBody": { "type": "boolean"},
+          "validateTraceability": { "type": "boolean"},
+          "validateErrorResponse": { "type": "boolean"},
+
+          "jexlExpression": { "type": "string"},
+          "jexlExpressionExpectedValue": { "type": "string"},
+          "jexlExpressionMatchingOperation": { "type": "string"}
+        }
+      }
+    }
+  }
+}

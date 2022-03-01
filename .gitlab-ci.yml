@@ -1,0 +1,21 @@
+variables:
+  MAVEN_CLI_OPTS: "--batch-mode"
+
+image: maven:3.3.9-jdk-8
+
+stages:
+  - Build
+
+cache:
+  paths:
+    - .m2/repository
+
+build:jdk8:
+  stage: Build
+  script:
+    - 'mvn $MAVEN_CLI_OPTS clean package'
+  only:
+    - main
+  artifacts:
+    paths:
+      - target/validationReport

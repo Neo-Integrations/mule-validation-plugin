@@ -1,0 +1,22 @@
+#%RAML 1.0 DataType
+displayName:  Error Response Message
+description:  To be used as HTTP Error Response
+properties:
+  errors:
+    type: array
+    items:
+      type: object
+      properties:
+        status:
+          type: string
+          description: "The HTTP Response Status code"
+          required: true
+        title:
+          type: string
+          description: "Error message title"
+          required: true
+        detail:
+          type: string
+          description: "Detail error message"
+          required: false
+            

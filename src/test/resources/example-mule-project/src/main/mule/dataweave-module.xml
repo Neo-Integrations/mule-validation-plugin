@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd  http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
+	<flow name="main-flow">
+		<http:listener path="/api/*" config-ref="api-httpListenerConfig">
+			<http:response statusCode="#[vars.httpStatus default 200]">
+				<http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+			</http:response>
+			<http:error-response statusCode="#[vars.httpStatus default 500]">
+				<http:body><![CDATA[#[payload]]]></http:body>
+				<http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+			</http:error-response>
+		</http:listener>
+		<flow-ref doc:name="init-subflow" doc:id="95f281f0-e771-42ab-af49-26a2578d4d87" name="init-subflow" />
+		<apikit:router config-ref="api-router_belron" />
+		<error-handler ref="globalErrorHandler" />
+	</flow>
+	<flow name="console-flow">
+		<http:listener path="/console/*" config-ref="api-httpListenerConfig">
+			<http:response statusCode="#[vars.httpStatus default 200]">
+				<http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+			</http:response>
+			<http:error-response statusCode="#[vars.httpStatus default 500]">
+				<http:body><![CDATA[#[payload]]]></http:body>
+				<http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+			</http:error-response>
+		</http:listener>
+		<apikit:console config-ref="api-router_belron" />
+	</flow>
+	<flow name="get:\orders:api-router_belron">
+		<logger level="INFO" doc:name="Log Message Before CreatePublish operation" doc:id="5464c09c-351a-471b-be3a-a44675d40c40" message="#[output application/json &#10;--- &#10;dwl::logger::Logger::log('Before Searching Orders flow', flow.name, vars.logMsg)]" />
+		<flow-ref doc:name="search-orders-flow" doc:id="5a84db77-7e9d-4663-9d57-aad3361eb872" name="search-orders-flow" />
+		<logger level="INFO" doc:name="Log Message After CreatePublish operation" doc:id="fe2a7b23-5ae5-4cae-a162-6e2fbde0a69e" message="#[output application/json --- dwl::logger::Logger::log('After Searching Orders flow', flow.name, vars.logMsg)]" />
+	</flow>
+	<flow name="get:\products:api-router_belron">
+		<ee:transform doc:name="Compose Log Message" doc:id="ec4841e4-9627-4d23-a0fe-407fb526f396">
+			<ee:message />
+			<ee:variables>
+				<ee:set-variable resource="file_name.dwl" variableName="logMsg" />
+			</ee:variables>
+		</ee:transform>
+		<logger level="INFO" doc:name="Log Message" doc:id="e526f9f5-2ba9-4e50-81ba-c40029af2442" message="#[output application/json --- dwl::logger::Logger::log(vars.logMsg)]" />
+		<flow-ref doc:name="search-product-flow" doc:id="b86282a0-2c94-4a72-b057-79fab6e42020" name="search-product-flow" />
+	</flow>
+
+</mule>

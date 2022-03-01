@@ -1,0 +1,120 @@
+[
+	{
+		"ruleId" : "RULE_002",
+		"description" : "main-flow must exists in interface.xml",
+		"severity": "MAJOR",
+		"active": false,
+		"nodeSpecification": {
+			"nodeReference": "/mule/flow[@name='main-flow']",
+			"xPathNodeReference": true
+		},
+		"aggregation": {
+			"nodeCardinality": "ONLY_ONE"
+		},
+		"location": {
+			"path": "src/main/mule",
+			"inlcudeFileNamePattern": "(.*).xml",
+			"excludeFileNamePattern": "pom.xml"
+		}
+	},
+	{
+		"ruleId" : "RULE_003",
+		"description" : "Standard RAML validation",
+		"severity": "MAJOR",
+		"active": false,
+		"ramlRule": {
+			"validateTitle" : true,
+			"validateDescription" : true,
+			"validateDocumentation" : true,
+			"validateSecuritySchemes" : true,
+			"validateOAuth2Scheme" : true,
+			"validateClientIdEnforcementScheme" : true,
+			"validateResponseBody" : true,
+			"validateRequestBody" : true,
+			"validateTraceability" : true,
+			"validateErrorResponse" : true
+		},
+		"location": {
+			"path": "src/main/resources/api",
+			"inlcudeFileNamePattern": "api.raml",
+			"excludeFileNamePattern": "pom.xml"
+		}
+	},
+	{
+		"ruleId" : "RULE_004",
+		"description" : "Check if RAML has baseUri",
+		"severity": "MAJOR",
+		"active": false,
+		"ramlRule": {
+			"jexlExpression": "obj.servers().get(0).url().value() != null",
+			"jexlExpressionExpectedValue": "true",
+			"jexlExpressionMatchingOperation": "=="
+		},
+		"location": {
+			"path": "src/main/resources/api",
+			"inlcudeFileNamePattern": "api.raml",
+			"excludeFileNamePattern": "pom.xml"
+		}
+	},
+	{
+		"ruleId" : "RULE_005",
+		"description" : "mule.key must be declared as secureProperties in mule-artifact.json",
+		"severity": "MAJOR",
+		"active": false,
+		"nodeSpecification": {
+			"nodeReference": "$.secureProperties",
+			"attributeValue": "mule.key",
+			"attributeOperation": "CONTAINS"
+		},
+		"location": {
+			"path": "",
+			"inlcudeFileNamePattern": "mule-artifact.json"
+		}
+	},
+	{
+		"ruleId" : "RULE_006",
+		"description" : "anypoint.platform.client_id must be declared as secureProperties in mule-artifact.json",
+		"severity": "MAJOR",
+		"active": false,
+		"nodeSpecification": {
+			"nodeReference": "$.secureProperties",
+			"attributeValue": "anypoint.platform.client_id",
+			"attributeOperation": "CONTAINS"
+		},
+		"location": {
+			"path": "",
+			"inlcudeFileNamePattern": "mule-artifact.json"
+		}
+	},
+	{
+		"ruleId" : "RULE_007",
+		"description" : "anypoint.platform.client_id must be declared as secureProperties in mule-artifact.json",
+		"severity": "MAJOR",
+		"active": false,
+		"nodeSpecification": {
+			"nodeReference": "$.secureProperties",
+			"attributeValue": "anypoint.platform.client_secret",
+			"attributeOperation": "CONTAINS"
+		},
+		"location": {
+			"path": "",
+			"inlcudeFileNamePattern": "mule-artifact.json"
+		}
+	},
+	{
+		"ruleId" : "RULE_0024",
+		"description" : "At least one log component has been used to log useful information",
+		"severity": "MAJOR",
+		"nodeSpecification": {
+			"nodeReference": "logger"
+		},
+		"aggregation": {
+			"nodeCardinality": "AT_LEAST_ONE"
+		},
+		"location": {
+			"path": "src/main/mule",
+			"inlcudeFileNamePattern": "(.*).xml",
+			"excludeFileNamePattern": "pom.xml"
+		}
+	}
+]

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.neointegration</groupId>
+                <artifactId>validate-mule-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <configuration>
+                    <projectDir>src/test/resources/example-mule-project</projectDir>
+                    <ruleFileLoc>src/test/resources</ruleFileLoc>
+                    <ruleFileName>app-rule.json</ruleFileName>
+                    <reportPath>target/validationReport</reportPath>
+                    <reportFileName>report.html</reportFileName>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>validate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
