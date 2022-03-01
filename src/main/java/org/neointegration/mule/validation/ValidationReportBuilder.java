@@ -76,6 +76,7 @@ public class ValidationReportBuilder {
     public void createXMLReport(String reportPath,
                                 String reportFileName,
                                 List<RuleResult> ruleResultList) throws MojoExecutionException {
+
         File directory = new File(reportPath);
         if (!directory.exists()) {
             directory.mkdirs();
