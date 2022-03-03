@@ -284,56 +284,42 @@ mvn validate-mule:validate
 ------------------------------------------------------------------------------------------------------------
 Rule ID          Status   Rule Description                                                      
 ------------------------------------------------------------------------------------------------------------
-RULE_001         PASSED   HTTP Listner Config must exists with port point to ${http.private.port}
+RULE_0001        PASSED   HTTP Listner Config must exists with port point to ${http.private.port} or 8091
 
-RULE_002         PASSED   Flow name must be snakecase with '-flow' suffix                       
+RULE_0002        PASSED   Flow name must be snakecase with '-flow' suffix                       
 
-RULE_003         PASSED   Subflow name must be snakecase with '-subflow' suffix                 
+RULE_0003        PASSED   Subflow name must be snakecase with '-subflow' suffix                 
 
-RULE_004         PASSED   main-flow must exists in interface.xml                                
+RULE_0004        PASSED   main-flow must exists in interface.xml                                
 
-RULE_005         FAILED   Application should have use APIKit to auto-generate the implementation interface
-                          Error: File global.xml has 1 config nodes                             
-                          Error: File interface.xml has 0 config nodes                          
-                          Error: File search-orders.xml has 0 config nodes                      
-                          Error: File logger.xml has 0 config nodes                             
-                          Error: File health.xml has 0 config nodes                             
-                          Error: File error-handling.xml has 0 config nodes                     
-                          Error: File search-product.xml has 0 config nodes                     
+RULE_0005        PASSED   Application should have use APIKit to auto-generate the implementation interface
 
-RULE_006         PASSED   Configuration files shouldn't have so many flows                      
+RULE_0006        PASSED   Configuration files shouldn't have so many flows                      
 
-RULE_007         PASSED   Configuration files shouldn't have so many subflows                   
+RULE_0007        PASSED   Configuration files shouldn't have so many subflows                   
 
-RULE_008         PASSED   Mule Credentials Vault shouldn't use a hardcoded encryption key       
+RULE_0008        PASSED   Mule Credentials Vault shouldn't use a hardcoded encryption key       
 
-RULE_009         PASSED   Application resources should be managed with application properties   
+RULE_0009        PASSED   Application resources should be managed with application properties   
 
-RULE_010         PASSED   Application Secrets must be managed using secure properties           
+RULE_0010        PASSED   Application Secrets must be managed using secure properties           
 
-RULE_011         FAILED   AutoDiscovery should be use to register the app in API manager        
-                          Error: File global.xml has 1 autodiscovery nodes                      
-                          Error: File interface.xml has 0 autodiscovery nodes                   
-                          Error: File search-orders.xml has 0 autodiscovery nodes               
-                          Error: File logger.xml has 0 autodiscovery nodes                      
-                          Error: File health.xml has 0 autodiscovery nodes                      
-                          Error: File error-handling.xml has 0 autodiscovery nodes              
-                          Error: File search-product.xml has 0 autodiscovery nodes              
+RULE_0011        PASSED   AutoDiscovery should be use to register the app in API manager        
 
-RULE_012         PASSED   globalErrorHandler Handler must be defined in error-handling.xml      
+RULE_0012        PASSED   globalErrorHandler Handler must be defined in error-handling.xml      
 
-RULE_013         PASSED   Global error handler must be enforced in the main-flow flow           
+RULE_0013        PASSED   Global error handler must be enforced in the main-flow flow           
 
-RULE_014         PASSED   Every API must use parent pom with groupId 75dbd05f-1b06-4cf7-b3be-b8bfbc18afc9
+RULE_0014        PASSED   Every API must use parent pom with groupId 75dbd05f-1b06-4cf7-b3be-b8bfbc18afc9
 
-RULE_015-a       FAILED   Data transformations should be stored in external .dwl files - Payload
+RULE_0015-a      FAILED   Data transformations should be stored in external .dwl files - Payload
                           Warning: The rule failed in the file [search-orders.xml] as it could not find any attribute with the name [resource]
                           Warning: The rule failed in the file [search-product.xml] as it could not find any attribute with the name [resource]
 
-RULE_015-b       FAILED   Data transformations should be stored in external .dwl files - Variable
+RULE_0015-b      FAILED   Data transformations should be stored in external .dwl files - Variable
                           Warning: The rule failed in the file [interface.xml] as it could not find any attribute with the name [resource]
 
-RULE_016         PASSED   AutoDiscovery API ID shouldn't use a hardcoded value                  
+RULE_0016        PASSED   AutoDiscovery API ID shouldn't use a hardcoded value                  
 
 RULE_0017-01-10  FAILED   Standard RAML validation                                              
                           Error: API Specification description has not been defined             
@@ -345,23 +331,30 @@ RULE_0017-01-10  FAILED   Standard RAML validation
 
 RULE_0018        PASSED   Check if RAML has baseUri                                             
 
-RULE_0019        PASSED   There must be a file name logger.xml                                  
+RULE_0019        FAILED   There must be a file name logger.xml                                  
 
-RULE_0020        PASSED   There must be a file name error-handling.xml                          
+RULE_0020        FAILED   There must be a file name error-handling.xml                          
 
-RULE_0021        PASSED   There must be a file name health.xml                                  
+RULE_0021        FAILED   There must be a file name health.xml                                  
 
-RULE_022         PASSED   mule.key must be declared as secureProperties in mule-artifact.json   
+RULE_0022-1      PASSED   mule.key must be declared as secureProperties in mule-artifact.json   
 
-RULE_023         PASSED   anypoint.platform.client_id must be declared as secureProperties in mule-artifact.json
+RULE_0022-2      PASSED   anypoint.platform.client_id must be declared as secureProperties in mule-artifact.json
 
-RULE_024         PASSED   anypoint.platform.client_id must be declared as secureProperties in mule-artifact.json
+RULE_0022-3      PASSED   anypoint.platform.client_id must be declared as secureProperties in mule-artifact.json
+
+RULE_0023        PASSED   Payload must not be logged                                            
+
+RULE_0024        FAILED   API must use 'dwl::logger::Logger' module to print log                
+                          Error: The rule failed in the file [health.xml] as it could not find any attribute with the name [message]
+
+RULE_0024        PASSED   At least one log component has been used to log useful information    
 
 ------------------------------------------------------------------------------------------------------------
 
 ---------------------
-|  Passed |     20 | 
-|  Failed |      5 | 
+|  Passed |     21 | 
+|  Failed |      7 | 
 ---------------------
 
 ************************ Static Code Validation Results End ************************************************

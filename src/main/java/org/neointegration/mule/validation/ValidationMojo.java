@@ -38,7 +38,12 @@ public class ValidationMojo extends AbstractMojo {
         try {
             final List<RuleResult> resultList = new ArrayList<>();
             projectDir = this.trimPath(projectDir);
-            final List<Rule> rules = PluginUtil.loadRuleFile(projectDir + File.separator + ruleFileLoc, ruleFileName);
+            final String ruleFileDir = new StringBuilder()
+                    .append(projectDir)
+                    .append(File.separator)
+                    .append(ruleFileLoc).toString();
+
+            final List<Rule> rules = PluginUtil.loadRuleFile(ruleFileDir, ruleFileName);
 
             for (Rule rule : rules) {
                 if(!rule.isActive()) continue; // Skip the rule
@@ -48,7 +53,11 @@ public class ValidationMojo extends AbstractMojo {
 
             final ValidationReportBuilder report = new ValidationReportBuilder();
             report.printToConsole(resultList);
-            report.createXMLReport(projectDir + File.separator + reportPath, reportFileName, resultList);
+            final String reportFilePath = new StringBuilder()
+                    .append(projectDir)
+                    .append(File.separator)
+                    .append(reportPath).toString();
+            report.createXMLReport(reportFilePath, reportFileName, resultList);
 
             for(RuleResult result: resultList) {
                 if(result.getStatus() == Status.FAILED &&
