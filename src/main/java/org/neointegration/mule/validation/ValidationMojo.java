@@ -36,24 +36,17 @@ public class ValidationMojo extends AbstractMojo {
    @Override
     public void execute() throws MojoExecutionException {
         try {
-            StaticCodeAnalyser analyser = new StaticCodeAnalyser();
+            final List<RuleResult> resultList = new ArrayList<>();
             projectDir = this.trimPath(projectDir);
-
-            List<Rule> rules = PluginUtil.loadRuleFile(projectDir + File.separator + ruleFileLoc, ruleFileName);
-            List<RuleResult> resultList = new ArrayList<>();
+            final List<Rule> rules = PluginUtil.loadRuleFile(projectDir + File.separator + ruleFileLoc, ruleFileName);
 
             for (Rule rule : rules) {
-                if(!rule.isActive()) continue;
-                RuleResult result = new RuleResult();
-                result.setRule(rule);
-                analyser.validateEachRule(rule,
-                        new File(projectDir + File.separator + rule.getLocation().getPath()),
-                        result,
-                        projectDir);
-                resultList.add(result);
+                if(!rule.isActive()) continue; // Skip the rule
+                rule.setProjectDir(projectDir);
+                resultList.add(rule.analyse());
             }
 
-            ValidationReportBuilder report = new ValidationReportBuilder();
+            final ValidationReportBuilder report = new ValidationReportBuilder();
             report.printToConsole(resultList);
             report.createXMLReport(projectDir + File.separator + reportPath, reportFileName, resultList);
 
@@ -71,7 +64,7 @@ public class ValidationMojo extends AbstractMojo {
 
     }
 
-    private String trimPath(String projectDir) {
+    private String trimPath(final String projectDir) {
         String dir = projectDir;
 
         if(projectDir == null) {

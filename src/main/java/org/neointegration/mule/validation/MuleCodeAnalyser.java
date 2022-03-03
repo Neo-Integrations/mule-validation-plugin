@@ -14,18 +14,15 @@ import org.neointegration.mule.validation.domain.Rule;
 import org.neointegration.mule.validation.domain.RuleResult;
 import org.neointegration.mule.validation.domain.Status;
 
-public class StaticCodeAnalyser {
+public class MuleCodeAnalyser implements CodeAnalyser {
 
-	public void validateEachRule(Rule rule, File dir, RuleResult ruleResult, String projectDir) {
+	@Override
+	public RuleResult analyse(final Rule rule) {
+		final RuleResult ruleResult = new RuleResult(rule);
 
-		List<File> files = this.files(dir, rule.getLocation().getInlcudeFileNamePattern(),
-				rule.getLocation().getExcludeFileNamePattern());
-
-		rule.setProjectDir(projectDir);
-
-		for (File file : files) {
+		for(File file: this.listFiles(rule)) {
 			try {
-				Validator.validateRule(file, rule);
+				Validator.getInstance(file, rule).validate(file, rule);
 
 				// If return false, do not repeat the rule for any other file
 				// Useful for RAML rules as it only requires to process one time for every rule.
@@ -33,11 +30,13 @@ public class StaticCodeAnalyser {
 
 			} catch (Exception ignored) {}
 		}
+
 		ruleResult.setResults(rule.getMapList());
 		
 		int howManySuccess = 0;
 		int howManyFailed = 0;
 		int maxNodeInAFile = 0;
+
 		for(Result result: rule.getMapList()) {
 			if(result.getStatus() == Status.PASSED) {
 				if(result.getNumberOfNode() > 0) {
@@ -55,31 +54,37 @@ public class StaticCodeAnalyser {
 		
 		if(rule.getAggregation() != null &&
 				PluginUtil.isNotNull(rule.getAggregation().getNodeCardinality())) {
-			ruleResult.setStatus(rule.getAggregation().getNodeCardinality().eval(howManySuccess,
-					rule.getAggregation().getLimit(),
-					rule.getMapList().size(), maxNodeInAFile));
+
+			ruleResult.setStatus(
+					rule.getAggregation().getNodeCardinality().eval(
+							howManySuccess,
+							rule.getAggregation().getLimit(),
+							rule.getMapList().size(), maxNodeInAFile));
 		} else {
 			if(howManyFailed > 0) {
 				ruleResult.setStatus(Status.FAILED);
 			}
 		}
 
+		return ruleResult;
 	}
 
-	private List<File> files(File dir, String includeFileNamePattern, String excludeFileNamePattern) {
-		List<File> listFiles = new ArrayList<File>();
+	private List<File> listFiles(Rule rule) {
+		final List<File> listFiles = new ArrayList<File>();
+		final File dir = new File(rule.getProjectDir() + File.separator + rule.getLocation().getPath());
 
-		if(PluginUtil.isNullOrEmpty(includeFileNamePattern)) throw new IllegalArgumentException("includeFileNamePattern must be set");
+		if(PluginUtil.isNullOrEmpty(rule.getLocation().getInlcudeFileNamePattern()))
+			throw new IllegalArgumentException("includeFileNamePattern must be set");
 
-		Collection<File> files = FileUtils.listFiles(dir, new RegexFileFilter(includeFileNamePattern),
+		final Collection<File> files = FileUtils.listFiles(dir, new RegexFileFilter(rule.getLocation().getInlcudeFileNamePattern()),
 				DirectoryFileFilter.DIRECTORY);
 
-		String excludDir = dir.getAbsolutePath() + File.separator + "target";
+		final String excludeDir = dir.getAbsolutePath() + File.separator + "target";
 		for (File f : files) {
-			if (f.getAbsolutePath().startsWith(excludDir) == false) {
-				if (PluginUtil.isNullOrEmpty(excludeFileNamePattern)) {
+			if (f.getAbsolutePath().startsWith(excludeDir) == false) {
+				if (PluginUtil.isNullOrEmpty(rule.getLocation().getExcludeFileNamePattern())) {
 					listFiles.add(f);
-				} else if(f.getName().matches(excludeFileNamePattern) == false) {
+				} else if(f.getName().matches(rule.getLocation().getExcludeFileNamePattern()) == false) {
 					listFiles.add(f);
 				}
 			}

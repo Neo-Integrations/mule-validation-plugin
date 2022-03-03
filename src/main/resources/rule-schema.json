@@ -90,6 +90,11 @@
           "jexlExpressionExpectedValue": { "type": "string"},
           "jexlExpressionMatchingOperation": { "type": "string"}
         }
+      },
+      "analyserType": {
+        "type": "string",
+        "description": "Only one type of analyzer is supported which is MULE. In future the plugin can be extended to support other code types.",
+        "enum": ["MULE"]
       }
     }
   }

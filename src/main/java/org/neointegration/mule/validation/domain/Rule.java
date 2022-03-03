@@ -3,7 +3,6 @@ package org.neointegration.mule.validation.domain;
 
 import org.neointegration.mule.validation.*;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +15,7 @@ public class Rule {
 	private RAMLRule ramlRule;
 	private boolean active = true;
 	private Locations location;
+	private CodeAnalyserType analyserType = CodeAnalyserType.MULE;
 
 	// Below attributes are for transactional convenience
 	private FileType fileType;
@@ -112,6 +112,9 @@ public class Rule {
 	public void addToMapList(Result result) {
 		this.mapList.add(result);
 	}
+	public void resetMapList() {
+		this.mapList.clear();
+	}
 
 	public String getProjectDir() {
 		return projectDir;
@@ -119,6 +122,14 @@ public class Rule {
 
 	public void setProjectDir(String projectDir) {
 		this.projectDir = projectDir;
+	}
+
+	public CodeAnalyserType getAnalyserType() {
+		return analyserType;
+	}
+
+	public void setAnalyserType(CodeAnalyserType analyserType) {
+		this.analyserType = analyserType;
 	}
 
 	@Override
@@ -132,9 +143,29 @@ public class Rule {
 				", ramlRule=" + ramlRule +
 				", active=" + active +
 				", location=" + location +
+				", analyserType=" + analyserType +
 				", fileType=" + fileType +
 				", finished=" + finished +
+				", mapList=" + mapList +
+				", projectDir='" + projectDir + '\'' +
 				'}';
+	}
+
+	public RuleResult analyse() {
+		return this.analyserType.analyse(this);
+	}
+
+	private static enum CodeAnalyserType {
+		MULE(new MuleCodeAnalyser());
+
+		private CodeAnalyser analyser;
+		private CodeAnalyserType(CodeAnalyser analyser) {
+			this.analyser = analyser;
+		}
+
+		private RuleResult analyse(Rule rule) {
+			return analyser.analyse(rule);
+		}
 	}
 
 	public static enum FileType {
@@ -149,20 +180,11 @@ public class Rule {
 			this.validator = validator;
 		}
 
-		public static Validator match(File file, Rule rule) {
-
-			if(PluginUtil.isNotNull(rule.getFileType()))
-				return rule.getFileType().validator;
-
-			String str = file.getName().toLowerCase();
-			if(PluginUtil.isNullOrEmpty(str)) return null;
-			for(FileType fileType: FileType.values()){
-				if(str.endsWith(fileType.extension)) {
-					rule.setFileType(fileType);
-					return fileType.validator;
-				}
-			}
-			return null;
+		public Validator getValidator() {
+			return this.validator;
+		}
+		public String getExtension() {
+			return this.extension;
 		}
 	}
 }

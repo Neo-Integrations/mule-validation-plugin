@@ -4,15 +4,16 @@ import java.util.List;
 
 public class RuleResult {
 
-	private Rule rule;
+	private final Rule rule;
 	private List<Result> results;
 	private Status status = Status.PASSED;
+
+	public RuleResult(Rule rule) {
+		this.rule = rule;
+	}
 	
 	public Rule getRule() {
 		return rule;
-	}
-	public void setRule(Rule rule) {
-		this.rule = rule;
 	}
 	public List<Result> getResults() {
 		return results;

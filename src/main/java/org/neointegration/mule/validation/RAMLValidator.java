@@ -18,7 +18,7 @@ public class RAMLValidator extends Validator{
     private static WebApiDocument model = null;
 
     @Override
-    public void validate(File ramlFile, Rule rule) throws ExecutionException, InterruptedException {
+    public void validate(final File ramlFile, final Rule rule) throws ExecutionException, InterruptedException {
 
         rule.setFinished(true);
 
@@ -29,13 +29,13 @@ public class RAMLValidator extends Validator{
             return;
         }
 
-        File file = PluginUtil.getRAMLFile(rule.getProjectDir());
+        final File file = PluginUtil.getRAMLFile(rule.getProjectDir());
         if(PluginUtil.isNull(file)) {
             System.out.println("****Warning: ["+rule.getRuleId() +"] No RAML found ****");
             return;
         }
 
-        WebApi api = this.parseRAML( file.getAbsolutePath());
+        final WebApi api = this.parseRAML( file.getAbsolutePath());
 
         // If JEXL expression language used then only evaluate that and
         // ignore all other standard RAML validation
@@ -57,9 +57,9 @@ public class RAMLValidator extends Validator{
 
     }
 
-    private void dynamicRAMLValidationRule(File ramlFile,
-                                           Rule rule,
-                                           WebApi api) {
+    private void dynamicRAMLValidationRule(final File ramlFile,
+                                           final Rule rule,
+                                           final WebApi api) {
         if(PluginUtil.isNull(rule.getRamlRule().getJexlExpressionExpectedValue())) {
             throw new IllegalArgumentException("jexlExpressionExpectedValue must be provided when jexlExpression is provided");
         }

@@ -19,14 +19,14 @@ import org.w3c.dom.NodeList;
 public class XMLValidator extends Validator {
 
 	@Override
-	public void validate(File xmlFile, Rule rule) throws Exception{
+	public void validate(final File xmlFile, final Rule rule) throws Exception{
 
 		if(false == this.doesNodeSpecificationExists(xmlFile, rule)) {
 			// If node specification does not exists then nothing else to do
 			return;
 		}
 
-		NodeList nodes = findMatchingNodes(xmlFile, rule);
+		final NodeList nodes = findMatchingNodes(xmlFile, rule);
 		if(PluginUtil.isNullOrEmpty(nodes)) {
 			// Return empty, if no node found
 			return;
@@ -59,7 +59,7 @@ public class XMLValidator extends Validator {
 				continue;
 			}
 
-			Node node = attributes.getNamedItem(rule.getNodeSpecification().getAttributeName());
+			final Node node = attributes.getNamedItem(rule.getNodeSpecification().getAttributeName());
 
 			if(PluginUtil.isNull(node) || PluginUtil.isNullOrEmpty(node.getNodeValue())) {
 				if(rule.getNodeSpecification().getAttributeOperation() == NodeAttributeOperation.NOT_MATCHES) {
@@ -92,7 +92,7 @@ public class XMLValidator extends Validator {
 									   Rule rule) throws Exception {
 		// Create DOM parser
 		final DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-		Document doc = builder.parse(xmlFile);
+		final Document doc = builder.parse(xmlFile);
 
 		// Find the nodes from XML document matching 'nodeReference'
 		NodeList nodes = null;
@@ -111,8 +111,8 @@ public class XMLValidator extends Validator {
 										Document doc
 										) throws XPathExpressionException {
 		NodeList nodes = null;
-		XPath xPath = XPathFactory.newInstance().newXPath();
-		XPathExpression expression = xPath.compile(rule.getNodeSpecification().getNodeReference());
+		final XPath xPath = XPathFactory.newInstance().newXPath();
+		final XPathExpression expression = xPath.compile(rule.getNodeSpecification().getNodeReference());
 		if(PluginUtil.isNotNullAndEmpty(rule.getNodeSpecification().getxPathReturnType()) &&
 				rule.getNodeSpecification().getxPathReturnType().equals("BOOLEAN")) {
 			boolean matched = (boolean) expression.evaluate(doc, XPathConstants.BOOLEAN);
@@ -133,7 +133,7 @@ public class XMLValidator extends Validator {
 		}
 
 		// If the 'NodeSpecification' does not exists, then consider it as success and return
-		Result result = PluginUtil.createResultObject(xmlFile, rule, null, true);
+		final Result result = PluginUtil.createResultObject(xmlFile, rule, null, true);
 		result.setNodeName(xmlFile.getName());
 		rule.addToMapList(result);
 

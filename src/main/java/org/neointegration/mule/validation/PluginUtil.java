@@ -124,7 +124,7 @@ public class PluginUtil {
     static Object eval(Object obj, String... jexlExpressions) {
         Object previous = obj;
         try {
-            for(String jexlExp:jexlExpressions) {
+            for(String jexlExp : jexlExpressions) {
                 JexlExpression e = jexl.createExpression(jexlExp);
                 JexlContext jc = new MapContext();
                 jc.set("obj", previous);
