@@ -47,6 +47,7 @@ public class MuleCodeAnalyser implements CodeAnalyser {
 				howManyFailed = howManyFailed + 1;
 			}	
 		}
+
 		if(rule.getAggregation() != null &&
 				PluginUtil.isNotNull(rule.getAggregation().getNodeCardinality())) {
 			ruleResult.setStatus(

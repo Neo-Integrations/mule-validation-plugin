@@ -116,5 +116,17 @@
 			"inlcudeFileNamePattern": "(.*).xml",
 			"excludeFileNamePattern": "pom.xml"
 		}
+	},
+	{
+		"ruleId" : "RULE_0020",
+		"description" : "There must be a file name dataweave-module.xml",
+		"severity": "MAJOR",
+		"aggregation": {
+			"nodeCardinality": "ONLY_ONE"
+		},
+		"location": {
+			"path": "src/main/mule",
+			"inlcudeFileNamePattern": "dataweave-module.xml"
+		}
 	}
 ]

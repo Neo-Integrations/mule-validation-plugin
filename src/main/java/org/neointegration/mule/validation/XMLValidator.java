@@ -127,8 +127,7 @@ public class XMLValidator extends Validator {
 	}
 
 	private boolean doesNodeSpecificationExists(File xmlFile, Rule rule) {
-		if(PluginUtil.isNotNull(rule.getNodeSpecification()) ||
-				PluginUtil.isNotNull(rule.getNodeSpecification().getNodeReference())) {
+		if(PluginUtil.isNotNull(rule.getNodeSpecification())) {
 			return true;
 		}
 
