@@ -8,8 +8,8 @@
   <version>1.0.0</version>
 
   <properties>
-    <releaseRepoUrl>https://pkgs.dev.azure.com/NeoIntegration/MuleSoft/_packaging/mvn-public/maven/v1</releaseRepoUrl>
-    <snapshotRepoUrl>https://pkgs.dev.azure.com/NeoIntegration/MuleSoft/_packaging/mvn-public/maven/v1</snapshotRepoUrl>
+    <releaseRepoUrl>https://pkgs.dev.azure.com/NeoIntegration/NeoIntegrations/_packaging/maven-public/maven/v1</releaseRepoUrl>
+    <snapshotRepoUrl>https://pkgs.dev.azure.com/NeoIntegration/NeoIntegrations/_packaging/maven-public/maven/v1</snapshotRepoUrl>
   </properties>
 
   <developers>
@@ -19,7 +19,7 @@
       <organization>Neo Integration</organization>
       <organizationUrl>https://github.com/ahaquemulesoft</organizationUrl>
       <roles>
-        <role>Solution Architect</role>
+        <role>Software Architect</role>
       </roles>
     </developer>
   </developers>
@@ -161,12 +161,12 @@
     <repository>
       <id>maven-public</id>
       <name>Neo Integrations Public Maven Repo</name>
-      <url>${snapshotRepoUrl}</url>
+      <url>${releaseRepoUrl}</url>
     </repository>
     <snapshotRepository>
       <id>maven-public</id>
       <name>Neo Integrations Public Maven Repo</name>
-      <url>${releaseRepoUrl}</url>
+      <url>${snapshotRepoUrl}</url>
     </snapshotRepository>
   </distributionManagement>
 

@@ -92,8 +92,8 @@ mvn validate-mule:validate
  <repositories>
      ...
      <repository>
-          <id>maven-public</id>
-          <url>https://pkgs.dev.azure.com/NeoIntegration/MuleSoft/_packaging/mvn-public/maven/v1</url>
+          <id>neo-integrations-public</id>
+          <url>https://pkgs.dev.azure.com/NeoIntegration/NeoIntegrations/_packaging/maven-public/maven/v1</url>
           <releases>
              <enabled>true</enabled>
           </releases>
@@ -104,21 +104,9 @@ mvn validate-mule:validate
      ...
  </repositories>
 ```
-2. Add the server authentication details in your `$M2_HOME/settings.xml`. Replace `[PERSONAL_ACCESS_TOKEN]` with the actual password. Please [contact](mailto:aminul1983@gmail.com) me if you would like to get a token.
- ```xml
-<servers>
-...
-    <server>
-      <id>maven-public</id>
-      <username>NeoIntegration</username>
-      <password>[PERSONAL_ACCESS_TOKEN]</password>
-    </server>
-...
-</servers>
- ```
-3. Thats it, you can start validating your Mule 4 application using following command:
+2Thats it, you can start validating your Mule 4 application using following command:
 ```
-mvn validate-mule:validate 
+mvn clean validate-mule:validate 
 ```
 
 ## Validation Rules
@@ -313,6 +301,7 @@ RULE_0013        PASSED   Global error handler must be enforced in the main-flow
 RULE_0014        PASSED   Every API must use parent pom with groupId 75dbd05f-1b06-4cf7-b3be-b8bfbc18afc9
 
 RULE_0015-a      FAILED   Data transformations should be stored in external .dwl files - Payload
+                          Warning: The rule failed in the file [interface.xml] as it could not find any attribute with the name [resource]
                           Warning: The rule failed in the file [search-orders.xml] as it could not find any attribute with the name [resource]
                           Warning: The rule failed in the file [search-product.xml] as it could not find any attribute with the name [resource]
 
@@ -331,11 +320,11 @@ RULE_0017-01-10  FAILED   Standard RAML validation
 
 RULE_0018        PASSED   Check if RAML has baseUri                                             
 
-RULE_0019        FAILED   There must be a file name logger.xml                                  
+RULE_0019        PASSED   There must be a file name logger.xml                                  
 
-RULE_0020        FAILED   There must be a file name error-handling.xml                          
+RULE_0020        PASSED   There must be a file name error-handling.xml                          
 
-RULE_0021        FAILED   There must be a file name health.xml                                  
+RULE_0021        PASSED   There must be a file name health.xml                                  
 
 RULE_0022-1      PASSED   mule.key must be declared as secureProperties in mule-artifact.json   
 
@@ -343,9 +332,11 @@ RULE_0022-2      PASSED   anypoint.platform.client_id must be declared as secure
 
 RULE_0022-3      PASSED   anypoint.platform.client_id must be declared as secureProperties in mule-artifact.json
 
-RULE_0023        PASSED   Payload must not be logged                                            
+RULE_0023        FAILED   Payload must not be logged                                            
+                          Error: The rule failed in the file [interface.xml] on the XML tag [message] and with attribute value [#[payload]]
 
 RULE_0024        FAILED   API must use 'dwl::logger::Logger' module to print log                
+                          Error: The rule failed in the file [interface.xml] on the XML tag [message] and with attribute value [#[payload]]
                           Error: The rule failed in the file [health.xml] as it could not find any attribute with the name [message]
 
 RULE_0024        PASSED   At least one log component has been used to log useful information    
@@ -353,8 +344,8 @@ RULE_0024        PASSED   At least one log component has been used to log useful
 ------------------------------------------------------------------------------------------------------------
 
 ---------------------
-|  Passed |     21 | 
-|  Failed |      7 | 
+|  Passed |     23 | 
+|  Failed |      5 | 
 ---------------------
 
 ************************ Static Code Validation Results End ************************************************
