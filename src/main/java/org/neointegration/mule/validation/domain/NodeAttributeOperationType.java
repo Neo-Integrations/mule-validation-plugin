@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public enum NodeAttributeOperation {
+public enum NodeAttributeOperationType {
 	EQUALS(0), MATCHES(1), NOT_MATCHES(2), CONTAINS(3), COUNT(4);
 
 
@@ -37,7 +37,7 @@ public enum NodeAttributeOperation {
 
 
 	private int index;
-	private NodeAttributeOperation(int index) {
+	private NodeAttributeOperationType(int index) {
 		this.index = index;
 	}
 

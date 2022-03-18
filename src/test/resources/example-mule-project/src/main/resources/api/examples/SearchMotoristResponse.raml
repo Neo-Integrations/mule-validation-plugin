@@ -1,0 +1,105 @@
+#%RAML 1.0 NamedExample
+{
+  "data" : [
+      {
+        "id" : "20043",
+        "sourceSystemInfo": [
+                  {
+                      "sourceSystemId": "SFDC",
+                      "sourceSystemPartyId": "20999"
+                  },
+                  {
+                      "sourceSystemId": "SV2",
+                      "sourceSystemPartyId": "20999"
+                  }
+              ],
+        "person": 
+          {
+            "firstName": "STEVEN",
+            "lastName": "DODDS",
+            "salutation": "Mr.",
+            "suffix": "Sr.",
+            "preferredName": "NA",
+            "middleName": "JAMES",
+            "personId" : "20043"
+          },
+        "contactMethod": 
+          [ 
+            {
+              "contactMethodIsPrimary": "Y",
+              "contactMethodValueExtension": "1234",
+              "contactMethodValue": "2345678901",
+              "contactMethodType": "Cell"
+            }
+          ],
+          "personAddress": [
+              {
+                  "address": {
+                      "territory": "OH",
+                      "addressLine1": "43",
+                      "addressLine2": "Broadmead Village",
+                      "addressLine3": "CONISTON ROAD",
+                      "country": "US",
+                      "postalCode": "12345",
+                      "city": "FOLKESTONE"
+                  },
+                  "addressType": "HOM"
+              }
+            ],
+          "personAssociation": 
+            [
+              {
+                  "personAssociationType": "Spouse",
+                  "associatedPersonId": "2",
+                  "partyRoleType": "test"
+              }
+            ],	
+          "personRole": 
+            {
+              "personRoleType": ["Motorist","Policy Holder","Nominated Person"]
+            },
+          "identification": [
+                {
+                    "issuingId": "DEA",
+                    "identificationType": "Passport",
+                    "identificationEndDt": "2025-01-27",
+                    "identificationCategory": "Passport Number",
+                    "identificationNum": "abc1234",
+                    "identificationStartDt": "2020-01-27"
+                },
+                {
+                    "issuingId": "DEA",
+                    "identificationType": "Passport",
+                    "identificationEndDt": "2025-01-27",
+                    "identificationCategory": "Passport Number",
+                    "identificationNum": "abc1234",
+                    "identificationStartDt": "2020-01-27"
+                }
+            ],
+        "personPreference": 
+          [  
+            {
+              "personPreferenceType": "MKTG",
+              "personPreferenceSubType": "Email"
+            }
+          ]
+      }
+  ],
+   "links": {
+      "next": {
+        "href": "https://dev.na.api.belron.com/c4e/mdm-motorist/v1/Motorist?pageNumber=2&pageSize=10&recordCount=2&searchMatchToken=SVR1.6EXBD"
+      },
+      "last": {
+        "href": " https://dev.na.api.belron.com/c4e/mdm-motorist/v1/Motorist?pageNumber=2&pageSize=10&recordCount=2&searchMatchToken=SVR1.6EXBD"
+      },
+      "prev": {
+        "href": ""
+      },
+      "self": {
+        "href": "https://dev.na.api.belron.com/c4e/mdm-motorist/v1/Motorist?pageNumber=1&pageSize=10&recordCount=2&searchMatchToken=SVR1.6EXBD"
+      },
+      "first": {
+        "href": "https://dev.na.api.belron.com/c4e/mdm-motorist/v1/Motorist?pageNumber=1&pageSize=10&recordCount=2&searchMatchToken=SVR1.6EXBD"
+      }
+    }
+}

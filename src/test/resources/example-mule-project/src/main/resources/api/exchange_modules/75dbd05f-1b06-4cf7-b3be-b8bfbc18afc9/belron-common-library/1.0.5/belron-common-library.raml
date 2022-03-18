@@ -1,0 +1,561 @@
+#%RAML 1.0 Library
+usage: Provides a collection of common resources, traits and types for use in API Specifications
+
+securitySchemes:
+  BasicAuth:
+      type: Basic Authentication
+      displayName: Basic-Auth
+      description: This API supports Basic Authentication through standard headers
+
+  ClientIdAuth:
+    type: x-client-enforcement
+    displayName: ClientId-Enforcement
+    describedBy:
+      headers:
+        client_id:
+          type: string
+          required: true
+          example: 1a3rfe496jfkms49402srr93
+        client_secret:
+          type: string
+          required: true
+          example: 7o9der492wklsmnxcvrt48f1
+      responses:
+        401:
+          body:
+            application/json:
+              properties:
+                error:
+                  type: string
+                  description: A description of the error.
+                  example: Client Credentials Invalid
+              example: |
+                {
+                  "error": "Client Credentials Invalid"
+                }
+
+
+types:
+  FirstName:
+    displayName: First Name
+    type: string
+    maxLength: 50
+    example: "Jane"
+    description: >-
+      An individual's first name(s).
+
+  LastName:
+    displayName: Last Name
+    type: string
+    maxLength: 50
+    example: "Bloggs"
+    description: >-
+      An individual's surname(s).
+  
+  FullName:
+    displayName: Full Name
+    type: string
+    maxLength: 100
+    example: "Jane Bloggs"
+    description: >-
+      An Entity's Full Name(s).
+
+  Gender:
+    displayName: Gender
+    type: string
+    maxLength: 50
+    example: "Female"
+    description: >-
+      An individual's gender. No set values to allow for different gender identities.
+
+  Initials:
+    displayName: Initials
+    type: string
+    maxLength: 16
+    example: "J.S."
+    description: >-
+      An individual's initials.
+
+  Title:
+    displayName: Title
+    type: string
+    maxLength: 16
+    example: "MS"
+    description: >-
+      An individual's title (Mr, Mrs, Miss, etc.).
+
+  PhoneNumber:
+    displayName: Phone Number
+    type: string
+    maxLength: 24
+    example: "07777 555 666"
+    description: >-
+      A phone number which can be used to contact an individual. This may be a landline or mobile number.
+
+  Address:
+    properties:
+      addressLine1:
+        type: string
+        required: true
+        description: "1st Line of Address"
+        example:
+          "123"
+      addressLine2:
+        type: string
+        required: true
+        description: "2nd Line of Address"
+        example:
+          ABC Road   
+      addressLine3:
+        type: string
+        required: true
+        description: "3rd Line of Address"
+        example:
+          Tester
+      city:
+        type: string
+        required: true
+        description: "City of Address"
+        example:
+          Slough 
+      territory:
+        type: string
+        required: true
+        description: "Territory of Address"
+        example:
+          Berkshire
+      country:
+        type: string
+        required: true
+        description: "Country of Residence"
+        example:
+          United Kingdom           
+      postalCode:
+        type: string
+        required: true
+        description: "Postal code of the Area"
+        example:
+          SL1 1AA
+      addressType:
+        type: string
+        required: false
+        description: "Type of Address"
+        example:
+          Business
+
+  EmailAddress:
+    displayName:  Email Address
+    type: string
+    maxLength: 200
+    example: "jane.bloggs@example.com"
+    pattern: ([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)
+    description: >-
+      An email address which can be used to contact an individual.
+  
+  ContactMethod:
+    description: Represents a type value pair for contact method data (mobile, email, etc.)
+    properties:
+      contactMethodType:
+        type: string
+        example:
+          email
+      contactMethodValue:
+        type: string
+        example:
+          jane.bloggs@example.com  
+
+  Preference:
+    description: Represents a type value pair for preference data (shop collection, communication, etc.)
+    properties:
+      preferenceType:
+        type: string
+        example:
+          communication
+      preferenceValue:
+        type: string
+        example:
+          email  
+
+  Identification:
+    description: Represents an identification document
+    properties:
+      documentType:
+        type: string
+        example:
+          Passport
+      documentNumber: 
+        type: string
+        example:
+          "605100803"
+      dateOfIssue:
+        type: date-only
+        example:
+          "2015-05-23"
+      dateOfExpiry:
+        type: date-only  
+        example:
+          "2025-05-22"  
+
+  ErrorResponse:
+    description: "Data type for defining list of errors"
+    properties:
+      errors:
+        description: "list of errors"
+        type: Errors[]
+ 
+  Errors:
+    properties:
+      status:
+        type: string
+        required: true
+        description: "the HTTP status code applicable to this problem, expressed as a string value"
+        example: "422"
+      source:
+        required: false
+        properties:
+          pointer:
+            type: string
+            required: false
+            description: " a JSON Pointer to the associated entity in the request document "
+            example: "/data/attributes/title"
+          parameter:
+            type: string
+            required: false
+            description: "a string indicating which URI query parameter caused the error."
+            example: "firstName"
+      title:
+        type: string
+        required: false
+        description: "a short, human-readable summary of the problem that SHOULD NOT change from occurrence to occurrence of the problem, except for purposes of localization."
+        example: "Invalid Attribute"
+
+      detail:
+        type: string
+        required: false
+        description: "a human-readable explanation specific to this occurrence of the problem. Like title, this field’s value can be localized."
+        example: "First name must contain at least three characters."
+      correlationId:
+        type: string
+        required: true
+        description: "Request identifier"
+        example: "dd960082-abbf-47c2-8c65-f18eeb35848b"
+
+  PingStatus:
+    description: Represents a dependency status result for ping responses
+    properties:
+      name: 
+        description: Logical name of the connection (e.g., system name)
+        type: string
+      status:
+        description: Status of the connection, identifying whether the connection was validated (UP), the connection timed out (DOWN), or the connection attempt failed for some other reason (ERROR)
+        enum: [ UP, DOWN, ERROR ]
+
+  PingResponse:
+    description: Represents a standard response structure for API health checks
+    properties:
+      status:
+        description: Describes the overall status of the API, including system connectivity states. When dependency checks are included, the status identifies whether the API is fully functional (OK), one or more dependencies are down (DEGRADED), or all dependencies are down (OFFLINE).
+        type: string
+        enum: [ "OK", "DEGRADED", "OFFLINE" ]
+      apiName:
+        description: Asset name of the API returning the response
+        type: string
+        maxLength: 128
+      apiVersion: 
+        description: Complete version of the API returning the response; format is major.minor.patch
+        type: string
+        minLength: 5
+        maxLength: 11
+      timestamp:
+        type: datetime
+      dependencies?:
+        description: Optional list of connections this API is dependent upon
+        type: PingStatus[]
+
+  ResponseStatus:
+    description: Represents the overall status of the operation
+    enum: [ SUCCESS, WARNING, ERROR ]
+    example: SUCCESS
+
+  ResultParameter:
+    description: Represents an arbitrary name/value pair for returning extended response data
+    properties:
+      paramName: string
+      paramValue: string
+    example:
+      paramName: AccountId
+      paramValue: "123456"
+
+  ResultMessage:
+    description: Represents a single message to be included in the response
+    type: object
+    properties:
+      severity:
+        description: Indicates the severity of this particular message item
+        enum: [ INFO, WARNING, ERROR ]
+      code: string
+      message?: string
+      parameters?: ResultParameter[]
+    example: !include examples/ReturnResultMessage.raml
+
+  BasicResponse:
+    description: Represents a basic response structure that can be returned by APIs to indicate status and result messages for success or extended error scenarios
+    properties:
+      responseStatus: ResponseStatus
+      resultMessages?: ResultMessage[]
+    example: !include examples/ReturnBasicResponse.raml
+
+
+traits:
+  hasCommonResponseHeaders:
+    x-correlation-id:
+      description: A unique transaction id used to correlate api requests end to end.
+      type: string
+      required: true
+      example: e393ef07-de7d-46c7-b514-27581be526d2
+    Content-Encoding:
+      type: string
+      description: The Content-Encoding representation header lists any encodings that have been applied to the representation (message payload), and in what order. This lets the recipient know how to decode the representation in order to obtain the original payload format.
+      required: false
+      example: "deflate, gzip"
+    Access-Control-Allow-Origin:
+      type: string
+      description: The Access-Control-Allow-Origin response header indicates whether the response can be shared with requesting code from the given origin.
+      required: false
+      example: "https://developer.mozilla.org"
+    Content-Type:
+      type: string
+      description: The Content-Type representation header is used to indicate the original media type of the resource (prior to any content encoding applied for sending).
+      required: false
+      examples:
+        example1:
+          "text/html; charset=utf-8"
+        example2:
+          "multipart/form-data; boundary=something"
+
+  hasBadRequest: 
+    400:
+      description: The server cannot or will not process the request due to something that is perceived to be a client error.
+      body:
+        type: ErrorResponse
+        example: !include examples/Return400Example.raml
+        
+  hasUnauthorized:
+    401:
+      description: No valid credentials found to access the requested resource.
+      body:
+        type: ErrorResponse
+        example: !include examples/Return401Example.raml
+
+  hasForbidden:
+    403:
+      description: The server has refused access to the requested resource.
+      body:
+        type: ErrorResponse
+        example: !include examples/Return403Example.raml
+
+  hasNotFound:
+    404:
+      description: The server cannot find the requested resource.
+      body:
+        type: ErrorResponse
+        example: !include examples/Return404Example.raml
+
+  hasNotSupported:
+    405:
+      description: The request method is not supported for the requested resource.
+      body:
+        type: ErrorResponse
+        example: !include examples/Return405Example.raml
+
+  hasNotAcceptable:
+    406:
+      description: The target resource does not have a current representation that would be acceptable to the user agent.
+      body:
+        type: ErrorResponse
+        example: !include examples/Return406Example.raml
+
+  hasUnsupportedMedia:
+    415:
+      description:  The accept header specified an unsupported media type.
+      body:
+        type: ErrorResponse
+        example: !include examples/Return415Example.raml
+
+  hasRateLimitExceeded:
+    429:
+      description: An API request rate limit has been exceeded.
+      body:
+        type: ErrorResponse
+        example: !include examples/Return429Example.raml
+
+  hasInternalError:
+    500:
+      description: An internal error occurred while processing the API request.
+      body:
+        type: ErrorResponse
+        example: !include examples/Return500Example.raml
+
+  hasMethodNotImplemented:
+    501:
+      description: The method has not been implemented.
+      body:
+        type: ErrorResponse
+        example: !include examples/Return501Example.raml
+
+  hasResourceCreated:
+    responses:
+    201:
+      headers:
+        Location:
+          description: Relative URI of the newly-created resource
+          type: string
+          example: "/customers/95830940"
+
+  ErrorResponses:
+    responses:
+      400:
+        description: The server cannot or will not process the request due to something that is perceived to be a client error.
+        body:
+          application/json:
+            type: ErrorResponse
+            example: !include examples/Return400Example.raml
+
+      401:
+        description: No valid credentials found to access the requested resource.
+        body:
+          application/json:
+            type: ErrorResponse
+            example: !include examples/Return401Example.raml
+
+      403:
+        description: The server has refused access to the requested resource.
+        body:
+          application/json:
+            type: ErrorResponse
+            example: !include examples/Return403Example.raml
+
+      404:
+        description: The server cannot find the requested resource.
+        body:
+          application/json:
+            type: ErrorResponse
+            example: !include examples/Return404Example.raml
+
+      405:
+        description: The request method is not supported for the requested resource.
+        body:
+          application/json:
+            type: ErrorResponse
+            example: !include examples/Return405Example.raml
+
+      406:
+        description: The target resource does not have a current representation that would be acceptable to the user agent.
+        body:
+          application/json:
+            type: ErrorResponse
+            example: !include examples/Return406Example.raml
+
+      415:
+        description:  The accept header specified an unsupported media type.
+        body:
+          application/json:
+            type: ErrorResponse
+            example: !include examples/Return415Example.raml
+
+      429:
+        description: An API request rate limit has been exceeded.
+        body:
+          application/json:
+            type: ErrorResponse
+            example: !include examples/Return429Example.raml
+
+      500:
+        description: An internal error occurred while processing the API request.
+        body:
+          application/json:
+            type: ErrorResponse
+            example: !include examples/Return500Example.raml
+
+      501:
+        description: The method has not been implemented.
+        body:
+          application/json:
+            type: ErrorResponse
+            example: !include examples/Return501Example.raml
+
+  PingResponse:
+    description: Apply this trait to the /ping endpoint of System APIs
+    queryParameters:
+      checkDependencies?:
+        description: Set to true to check and report status of all dependencies, such as system connections and downstream APIs; default is false
+        type: boolean
+    responses:
+      200:
+        body:
+          application/json:
+            type: PingResponse 
+            example: !include examples/PingResponseExample.raml
+
+  Locatable:
+    description: Apply this trait to POST methods that must return a resource identifier on 201 responses
+    responses:
+      201:
+        headers:
+          Location:
+            description: Relative URI of the newly-created resource
+            type: string
+            example: "/customers/95830940"
+
+  PaginationTraitPageBasedStrategy:
+    queryParameters: 
+      page[number]?: 
+        type: integer
+        description: specify the page of results to return
+        default: 0
+        minimum: 0
+      page[size]?: 
+        type: integer
+        description: It is the length of the page
+        default: 20
+        minimum: 1
+
+  PaginationTraitOffsetBasedStrategy:
+    queryParameters: 
+      page[offset]?: 
+        type: integer
+        description: Include results starting at this index position in the overall result set; the index of the first result is zero
+        default: 0
+        minimum: 0
+      page[limit]?: 
+        type: integer
+        description: Include at most this many items in the response
+        default: 20
+        minimum: 1
+      
+  PaginationTraitCursorBasedStrategy:
+    queryParameters: 
+      page[cursor]?: 
+        type: string
+        description: a cursor will be a piece of data that contains a pointer to an element and the info to get the next/previous elements. The server should return the cursor pointing to the next page in each request. In most cases, the cursor is opaque, so users cannot manipulate it.
+      page[limit]?: 
+        type: integer
+        description: Include at most this many items in the response
+        default: 20
+        minimum: 1
+
+  Sortable:
+    description: Apply this to a GET method that supports sorting.
+    queryParameters:
+      sort?:
+        type: string
+        description: A comma-separated list of properties to sort on, in the given order; negate a property to sort in descending order instead of ascending order (default)
+        example: name,-age
+
+  Trackable:
+    description: Use this header to optionally pass a tracking information to this API, for end-to-end traceability of the operation/transaction. 
+    headers: 
+      x-correlation-id?:
+        type: string
+        maxLength: 50
+        example: 421cb368-066b-11e1-9647-c5be7398b24e

@@ -1,6 +1,6 @@
 package org.neointegration.mule.validation.domain;
 
-public enum NodeCardinality {
+public enum NodeCardinalityType {
 	ONLY_ONE((howManySuccess, limit, total, maxNodeInAFile) -> howManySuccess == 1),
 	AT_LEAST_ONE((howManySuccess, limit, total, maxNodeInAFile) -> howManySuccess > 0),
 	MORE_THAN_ONE((howManySuccess, limit, total, maxNodeInAFile) -> howManySuccess > 1),
@@ -11,7 +11,7 @@ public enum NodeCardinality {
 
 
 	private CardinalityExpression expression;
-	private NodeCardinality(CardinalityExpression expression) {
+	private NodeCardinalityType(CardinalityExpression expression) {
 		this.expression = expression;
 	}
 

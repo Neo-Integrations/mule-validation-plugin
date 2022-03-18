@@ -1,10 +1,11 @@
 package org.neointegration.mule.validation;
 
 
-import org.neointegration.mule.validation.domain.Rule;
-import org.neointegration.mule.validation.domain.RuleResult;
-import org.neointegration.mule.validation.domain.Severity;
-import org.neointegration.mule.validation.domain.Status;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.DirectoryFileFilter;
+import org.apache.commons.io.filefilter.RegexFileFilter;
+import org.apache.jena.base.Sys;
+import org.neointegration.mule.validation.domain.*;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -13,6 +14,8 @@ import org.apache.maven.plugins.annotations.Parameter;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 @Mojo(name = "validate")
@@ -33,9 +36,15 @@ public class ValidationMojo extends AbstractMojo {
     @Parameter(property = "report.file.name", required = false ,defaultValue = "report.html")
     private String reportFileName;
 
+    @Parameter(property = "app.type", required = false, defaultValue = "HTTP")
+    private String appType;
+
    @Override
     public void execute() throws MojoExecutionException {
         try {
+            if(appType == null) appType = SelectorType.HTTP.name();
+            SelectorType app = SelectorType.valueOf(appType);
+
             final List<RuleResult> resultList = new ArrayList<>();
             projectDir = this.trimPath(projectDir);
             final String ruleFileDir = new StringBuilder()
@@ -46,18 +55,37 @@ public class ValidationMojo extends AbstractMojo {
             final List<Rule> rules = PluginUtil.loadRuleFile(ruleFileDir, ruleFileName);
 
             for (Rule rule : rules) {
-                if(!rule.isActive()) continue; // Skip the rule
                 rule.setProjectDir(projectDir);
+
+                // Skip the disabled rule
+                if(!rule.isActive()) {
+                    resultList.add(RuleResult.builder(rule)
+                            .withStatus(Status.SKIP)
+                            .build());
+                    continue; // Skip the rule
+                }
+
+                // Skip the rule for not matching the selector
+                if(rule.getSelectors() != null && rule.getSelectors().length > 0) {
+                    if(Arrays.asList(rule.getSelectors()).contains(app) == false) {
+                        resultList.add(RuleResult.builder(rule)
+                                .withStatus(Status.SKIP)
+                                .build());
+                        continue;
+                    }
+                }
+
                 resultList.add(rule.analyse());
             }
 
-            final ValidationReportBuilder report = new ValidationReportBuilder();
-            report.printToConsole(resultList);
+            ReportBuilder.INSTANCE.printToConsole(resultList);
+
             final String reportFilePath = new StringBuilder()
                     .append(projectDir)
                     .append(File.separator)
                     .append(reportPath).toString();
-            report.createXMLReport(reportFilePath, reportFileName, resultList);
+
+            ReportBuilder.INSTANCE.createHtmlReport(reportFilePath, reportFileName, resultList);
 
             for(RuleResult result: resultList) {
                 if(result.getStatus() == Status.FAILED &&

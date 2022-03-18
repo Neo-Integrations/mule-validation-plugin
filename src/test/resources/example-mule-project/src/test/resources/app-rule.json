@@ -21,13 +21,13 @@
 		"ruleId" : "RULE_003",
 		"description" : "Standard RAML validation",
 		"severity": "MAJOR",
-		"active": false,
+		"active": true,
 		"ramlRule": {
 			"validateTitle" : true,
 			"validateDescription" : true,
 			"validateDocumentation" : true,
 			"validateSecuritySchemes" : true,
-			"validateOAuth2Scheme" : true,
+			"validateOAuth2Scheme" : false,
 			"validateClientIdEnforcementScheme" : true,
 			"validateResponseBody" : true,
 			"validateRequestBody" : true,
@@ -36,7 +36,7 @@
 		},
 		"location": {
 			"path": "src/main/resources/api",
-			"inlcudeFileNamePattern": "api.raml",
+			"inlcudeFileNamePattern": "(.*)\\.raml",
 			"excludeFileNamePattern": "pom.xml"
 		}
 	},
@@ -124,6 +124,7 @@
 		"aggregation": {
 			"nodeCardinality": "ONLY_ONE"
 		},
+		"selectors": ["HTTP", "FILE"],
 		"location": {
 			"path": "src/main/mule",
 			"inlcudeFileNamePattern": "dataweave-module.xml"

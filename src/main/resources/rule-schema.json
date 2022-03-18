@@ -10,6 +10,14 @@
       "ruleId": { "type": "string", "description":  "Unique identifier of the rule"},
       "description": { "type": "string", "description":  "Brief description of the rule"},
       "active": { "type": "boolean", "description":  "Default is 'true'. If the value is is 'false' the rule will be skipped"},
+      "selectors": {
+        "type": "array",
+        "description": "This selector can be used to apply a rule to a project. By default the rule will be applicable to everything but it can be filtered by using certain values.",
+        "items": {
+          "type": "string",
+          "enum": ["HTTP", "FILE", "MQ"]
+        }
+      },
       "severity": {
         "type": "string",
         "description": "The value of this property will impact the build status. If the value is 'MINOR' then even when the rule validation fail, the build will not be failed. But, if the value of this property is either 'MAJOR' or 'CRITICAL' then build will fail if the rule validation fail",

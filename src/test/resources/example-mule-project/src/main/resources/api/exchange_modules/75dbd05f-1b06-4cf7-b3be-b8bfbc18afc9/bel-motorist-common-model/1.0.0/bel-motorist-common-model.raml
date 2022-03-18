@@ -1,0 +1,49 @@
+#%RAML 1.0 DataType
+
+usage: 
+  This resource defines the properties of a reusable common data type specific to a Motorist who is of interest to Belron
+uses:
+  common: /exchange_modules/75dbd05f-1b06-4cf7-b3be-b8bfbc18afc9/mdm-common-library/1.0.18/mdm-common-library.raml
+
+displayName: Motorist
+type: object
+
+description: Motorist information
+properties: 
+
+  id?: 
+    type: common.id 
+    description: Unique identifier
+  
+  sourceSystemInfo?: 
+    type: common.sourceSystemInfo
+    description: Collection describing source system and source system identifiers       
+  
+  person?: 
+    type: common.personRole
+    description: Person information descriptive fields (firstName, lastName, salutation, suffix, preferredName, middleName)
+  
+  contactMethod?:  
+    type: common.contactMethod
+    description: Contact method collection describing methods (emails, phone etc) of communicating between Belron & Motorist
+  
+  personAddress?:  
+    type: common.personAddress
+    description: Motorist address collection - records the addresses linked to Motorist
+  
+  personAssociation?:  
+    type: common.personAssociation
+    description: Person association collection - records additional persons associated with Motorist 
+  
+  personRole?:  
+    type: common.personRole
+    description:  Person role collection - records the role of a Motorist. e.g. Motorist/Nominated person/Policy Holder
+  
+  identification?:  
+    type: common.identification
+    description: Identification collection - records the identification linked to a motorist e.g. Driving licence details
+
+  personPreference?:  
+    type: common.personPreference
+    description: Preferences collection - records the preferences of a motorist e.g. Shop Selection and Marketing preferences 
+

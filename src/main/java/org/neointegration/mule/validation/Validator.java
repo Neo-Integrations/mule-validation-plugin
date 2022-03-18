@@ -4,9 +4,9 @@ import org.neointegration.mule.validation.domain.Rule;
 
 import java.io.File;
 
-public abstract class Validator {
+public interface Validator {
     public abstract void validate(final File file, final Rule rule) throws Exception;
-    public static Validator getInstance(final File file, final Rule rule) throws Exception {
+    public static Validator getInstance(final File file, final Rule rule) {
         if(PluginUtil.isNull(file) ||
                 PluginUtil.isNullOrEmpty(file.getName()))  return null;
         if(PluginUtil.isNotNull(rule.getFileType()))

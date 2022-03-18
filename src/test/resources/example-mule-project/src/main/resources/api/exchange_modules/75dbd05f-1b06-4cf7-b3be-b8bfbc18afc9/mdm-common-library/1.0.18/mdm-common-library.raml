@@ -1,0 +1,281 @@
+#%RAML 1.0 Library
+usage: Provides a collection of common resources for use for MDM API Specifications
+
+types:
+  id:
+    type: string 
+    example:
+      "20043"
+
+  sourceSystemInfo:
+    type: array
+    items:
+      
+      properties:
+        sourceSystemId?:
+          type: string
+          example: "SFDC"
+          description: >-
+            Id of the source system.
+
+        sourceSystemPartyId?:
+          type: string
+          example: "20999"
+          description: >-
+            Party Id in the source system.
+
+  person: 
+    properties :
+
+      firstName?:
+        type: string
+        maxLength: 50
+        example: "Jane"
+        description: >-
+          An individual's first name(s).
+
+      lastName?:
+        type: string
+        maxLength: 50
+        example: "Bloggs"
+        description: >-
+          An individual's last name(s).
+      
+      middleName?:
+        type: string
+        maxLength: 50
+        example: "JAMES"
+
+      salutation?:
+        type: string
+        example: "Mr."
+        description: >-
+          An individual's Salutation(s).
+
+      suffix?:
+        type: string
+        example: "Sr."
+        description: >-
+          An individual's Suffix(s).
+
+      preferredName?:
+        type: string
+      
+      personId?:
+        type: string
+      
+  contactMethod:
+    type: array
+    items:
+      properties:
+
+        contactMethodIsPrimary?:
+          type: string
+          example:
+            "Y"
+        
+        contactMethodValueExtension?:
+          type: string
+          example:
+            "1234"
+        
+        contactMethodValue?:
+          type: string
+          example:
+            "2345678901"
+        
+        contactMethodType?:
+          type: string
+          example:
+            "Cell"
+  
+  personAddress:
+    type: array 
+    items:
+      properties:
+
+        address?:
+          properties:
+
+            addressLine1?:
+              type: string
+              maxLength: 200 
+              description: "1st Line of Address"
+              example:
+                "123"
+
+            addressLine2?:
+              type: string
+              maxLength: 100 
+              description: "2nd Line of Address"
+              example:
+                ABC Road
+
+            addressLine3?:
+              type: string
+              maxLength: 50 
+              description: "3rd Line of Address"
+              example:
+                Tester
+
+            city?:
+              type: string
+              maxLength: 50 
+              description: "City of Address"
+              example:
+                Slough 
+
+            territory?:
+              type: string 
+              description: "Territory of Address"
+              example:
+                Berkshire
+
+            country?:
+              type: string 
+              description: "Country of Residence"
+              example:
+                United Kingdom   
+
+            postalCode?:
+              type: string
+              maxLength: 10 
+              description: "Postal code of the Area"
+              example:
+                SL1 1AA
+
+        addressType?:
+          type: string
+          required: false
+          description: "Type of Address"
+          example:
+            Business
+
+  personAssociation:
+    type: array 
+    items: 
+      properties:
+
+        personAssociationType?:
+          type: string 
+          example:
+            Spouse
+
+        associatedPersonId?:
+          type: string 
+          example:
+            "2"
+
+        partyRoleType?:
+          type: string 
+          example:
+            test
+
+  personRole:
+    properties:
+      
+      personRoleType?:
+        type: array
+        example:
+          ["PREP"]
+  identification:
+    type: array 
+    items:
+      properties:
+        
+        issuingId?:
+          type: string 
+          example:
+            "DEA"
+        
+        identificationType?:
+          type: string 
+          example:
+            "Passport"
+        
+        identificationEndDt?:
+          type: string 
+          example:
+            "2025-01-27"
+        
+        identificationCategory?:
+          type: string 
+          example:
+            "Passport Number"
+        
+        identificationNum?:
+          type: string 
+          example:
+            "abc1234"
+            
+        identificationStartDt?:
+          type: string 
+          example:
+            "2020-01-27"
+
+  personPreference:
+    type: array
+    items:
+      properties:
+        
+        personPreferenceType?:
+          type: string 
+          example:
+            "MKTG"
+
+        personPreferenceSubType?:
+          type: string 
+          example:
+            "Email"
+
+  links:
+    properties:
+      next?:
+        properties:
+          href?:
+            type: string
+      last?:
+        properties:
+          href?:
+            type: string
+      prev?:
+        properties:
+          href?:
+            type: string
+      self?:
+        properties:
+          href?:
+            type: string
+      first?:
+        properties:
+          href?:
+            type: string
+
+  Motorists:
+    properties:
+      data: 
+        type: array 
+        items:  
+          properties:
+            id?: id  
+            sourceSystemInfo?: sourceSystemInfo
+            person?: person
+            contactMethod?: contactMethod
+            personAddress?: personAddress
+            personAssociation?: personAssociation
+            personRole?: personRole
+            identification?: identification
+            personPreference?: personPreference
+      links?: links
+
+traits:
+  countryCode:
+    headers:
+      country_code:
+        type: string
+        description: Specify the [ISO 2 letter abbreviation](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) of the country for which this transaction is being made. Do not specify it for anything which is not specific to any country but for a global context.
+        required: false
+        minLength: 2
+        maxLength: 2
+        default: 'GB'
+

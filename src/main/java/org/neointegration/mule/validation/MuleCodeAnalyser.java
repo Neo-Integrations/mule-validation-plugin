@@ -14,11 +14,12 @@ import org.neointegration.mule.validation.domain.Rule;
 import org.neointegration.mule.validation.domain.RuleResult;
 import org.neointegration.mule.validation.domain.Status;
 
-public class MuleCodeAnalyser implements CodeAnalyser {
+public enum MuleCodeAnalyser implements CodeAnalyser {
+	INSTANCE;
 
 	@Override
 	public RuleResult analyse(final Rule rule) {
-		final RuleResult ruleResult = new RuleResult(rule);
+		final RuleResult ruleResult = RuleResult.builder(rule).build();
 
 		for(File file: this.listFiles(rule)) {
 			try {

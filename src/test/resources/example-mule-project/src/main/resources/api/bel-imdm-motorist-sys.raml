@@ -1,0 +1,70 @@
+#%RAML 1.0
+title: bel-imdm-motorist-sys
+version: v1
+baseUri: https://dev.na.api.belron.com/c4e/imdm-motorist/v1/
+
+description: This will call the informatica API and perform CRUD operations on the Party data from MDM and does the transformation to Motorist Common Model
+
+mediaType: application/json  
+
+
+documentation:
+  - title: Summary
+    content: !include documentation.md
+
+types:
+  motorist: !include /exchange_modules/75dbd05f-1b06-4cf7-b3be-b8bfbc18afc9/bel-motorist-common-model/1.0.0/bel-motorist-common-model.raml
+
+uses:
+  belron-common-library: /exchange_modules/75dbd05f-1b06-4cf7-b3be-b8bfbc18afc9/belron-common-library/1.0.5/belron-common-library.raml
+  motorist-traits: /traits/MototristTraits.raml
+  mdm-common-library: /exchange_modules/75dbd05f-1b06-4cf7-b3be-b8bfbc18afc9/mdm-common-library/1.0.18/mdm-common-library.raml
+  
+securedBy:
+  - belron-common-library.ClientIdAuth
+
+resourceTypes:
+  collection-item: !include /resourceTypes/CollectionItem.raml
+  
+/motorists:
+  is: [mdm-common-library.countryCode, belron-common-library.Trackable]
+  
+  type:
+    collection-item:
+      typeReference: 
+        type:  motorist
+      typeGetReference: 
+        type:  mdm-common-library.Motorists
+      exampleResponseReference: !include /examples/SearchMotoristResponse.raml
+      exampleCreateRequestRef: !include /examples/CreateMotoristRequest.raml
+      exampleCreateResponseRef: !include /examples/MotoristResponse.raml
+
+  get:
+    is: [motorist-traits.motoristSearchQueryParam]      
+  post:
+
+  /{motoristId}:
+    is: [mdm-common-library.countryCode, belron-common-library.Trackable]
+    description: motorist MDM ID should be passed as uri parameter.
+    type:
+      collection-item:
+        typeReference: 
+          type:  motorist
+
+        typeGetReference: 
+          type: motorist
+        exampleResponseReference:  !include /examples/ReadMotoristResponse.raml
+
+        exampleDeleteRequestRef: !include /examples/DeleteMotoristRequest.raml
+        exampleDeleteResponseRef: !include /examples/MotoristResponse.raml  
+
+        exampleUpdateRequestRef: !include /examples/UpdateMototristRequest.raml
+        exampleUpdateResponseRef: !include /examples/MotoristResponse.raml
+
+    get:
+    patch:
+    delete:
+
+    
+   
+        

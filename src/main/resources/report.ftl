@@ -50,6 +50,10 @@
       <th>Passed</th>
       <td>${passedSummary!}</td>
     </tr>
+    <tr>
+      <th>Skipped</th>
+      <td>${skippedSummary!}</td>
+    </tr>
   </table>
 
 

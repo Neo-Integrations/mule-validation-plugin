@@ -1,14 +1,14 @@
 package org.neointegration.mule.validation.domain;
 
 public class AggregatationOperations {
-	private NodeCardinality nodeCardinality;
+	private NodeCardinalityType nodeCardinality;
 	private int limit = 0;
 
-	public NodeCardinality getNodeCardinality() {
+	public NodeCardinalityType getNodeCardinality() {
 		return nodeCardinality;
 	}
 
-	public void setNodeCardinality(NodeCardinality nodeCardinality) {
+	public void setNodeCardinality(NodeCardinalityType nodeCardinality) {
 		this.nodeCardinality = nodeCardinality;
 	}
 	

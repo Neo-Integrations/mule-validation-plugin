@@ -6,7 +6,7 @@ public class TargetElement {
 	private String xPathReturnType;
 	private String attributeName;
 	private String attributeValue;
-	private NodeAttributeOperation attributeOperation;
+	private NodeAttributeOperationType attributeOperation;
 
 
 	public boolean isxPathNodeReference() {
@@ -34,10 +34,10 @@ public class TargetElement {
 	public void setAttributeValue(String attributeValue) {
 		this.attributeValue = attributeValue;
 	}
-	public NodeAttributeOperation getAttributeOperation() {
+	public NodeAttributeOperationType getAttributeOperation() {
 		return attributeOperation;
 	}
-	public void setAttributeOperation(NodeAttributeOperation attributeOperation) {
+	public void setAttributeOperation(NodeAttributeOperationType attributeOperation) {
 		this.attributeOperation = attributeOperation;
 	}
 

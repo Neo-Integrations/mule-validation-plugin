@@ -1,0 +1,64 @@
+#%RAML 1.0 ResourceType
+
+get?:
+  is: [ belron-common-library.ErrorResponses] 
+  description: |
+    Get the <<resourcePathName|!singularize>> information(s). 
+  responses: 
+    200:
+      body: 
+        application/json:
+          type: <<typeGetReference>>
+          example: <<exampleResponseReference>>
+
+patch?:
+  is: [ belron-common-library.ErrorResponses]
+  description: |
+    Updates the <<resourcePathName|!singularize>> information.
+  body:
+    type: |
+      <<typeReference>>
+    example: |
+      <<exampleUpdateRequestRef>>
+  responses:
+    200:
+      body:
+        type: |
+          <<typeReference>>
+        example: |
+          <<exampleUpdateResponseRef>>
+post?:
+  is: [ belron-common-library.ErrorResponses]
+  description: |
+    Creates the <<resourcePathName|!singularize>> information.
+  body:
+    type: |
+      <<typeReference>>
+    example: |
+      <<exampleCreateRequestRef>>
+  responses:
+    201:
+      body:
+        type: |
+          <<typeReference>>
+        example: |
+          <<exampleCreateResponseRef>>
+
+delete?:
+  is: [ belron-common-library.ErrorResponses]
+  description: |
+    Deletes the <<resourcePathName|!singularize>> information.
+  body:
+    type: |
+      <<typeReference>>
+    example: |
+      <<exampleDeleteRequestRef>>
+  responses:
+    200:
+      body:
+        type: |
+          <<typeReference>>
+        example: |
+          <<exampleDeleteResponseRef>>
+
+ 

@@ -9,7 +9,7 @@ Each project must have the following plugin configuration in the **pom.xml** fil
 <plugin>
   <groupId>org.neointegration</groupId>
   <artifactId>validate-mule-maven-plugin</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.3</version>
   <configuration>
     <ruleFileLoc>src/test/resources</ruleFileLoc>
     <ruleFileName>app-rule.json</ruleFileName>
@@ -30,14 +30,14 @@ Each project must have the following plugin configuration in the **pom.xml** fil
 ## How to trigger the validation
 - By default the plugin does not gets triggered as part of the build process, it needs to be explicitly triggered using following maven command:
 ```
-mvn validate-mule:validate 
+mvn clean validate-mule:validate 
 ```
 - If you rather like to trigger the source code validation as part of the build process, make the following changes in the plugin configuration (it links the validation to the build process using execution config ):
 ```xml
 <plugin>
     <groupId>org.neointegration</groupId>
     <artifactId>validate-mule-maven-plugin</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.3</version>
     <configuration>
         <projectDir>/Users/mhaque/AnypointStudio/belron/belron-api-template-v1</projectDir>
         <ruleFileLoc>src/test/resources</ruleFileLoc>
@@ -71,7 +71,7 @@ mvn validate-mule:validate
          <plugin>
               <groupId>org.neointegration</groupId>
               <artifactId>validate-mule-maven-plugin</artifactId>
-              <version>1.0.0</version>
+              <version>1.0.3</version>
               <configuration>
                 <ruleFileLoc>src/test/resources</ruleFileLoc>
                 <ruleFileName>app-rule.json</ruleFileName>

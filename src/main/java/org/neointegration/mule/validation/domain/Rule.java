@@ -16,6 +16,8 @@ public class Rule {
 	private boolean active = true;
 	private Locations location;
 	private CodeAnalyserType analyserType = CodeAnalyserType.MULE;
+	private SelectorType[] selectors;
+
 
 	// Below attributes are for transactional convenience
 	private FileType fileType;
@@ -132,6 +134,14 @@ public class Rule {
 		this.analyserType = analyserType;
 	}
 
+	public SelectorType[] getSelectors() {
+		return selectors;
+	}
+
+	public void setSelectors(SelectorType[] selectors) {
+		this.selectors = selectors;
+	}
+
 	@Override
 	public String toString() {
 		return "Rule{" +
@@ -144,6 +154,7 @@ public class Rule {
 				", active=" + active +
 				", location=" + location +
 				", analyserType=" + analyserType +
+				", selectors=" + selectors +
 				", fileType=" + fileType +
 				", finished=" + finished +
 				", mapList=" + mapList +
@@ -156,7 +167,7 @@ public class Rule {
 	}
 
 	private static enum CodeAnalyserType {
-		MULE(new MuleCodeAnalyser());
+		MULE(MuleCodeAnalyser.INSTANCE);
 
 		private CodeAnalyser analyser;
 		private CodeAnalyserType(CodeAnalyser analyser) {
@@ -169,9 +180,9 @@ public class Rule {
 	}
 
 	public static enum FileType {
-		XML(".xml", new XMLValidator()),
-		JSON(".json", new JSONValidator()),
-		RAML(".raml", new RAMLValidator());
+		XML(".xml", XMLValidator.INSTANCE),
+		JSON(".json", JSONValidator.INSTANCE),
+		RAML(".raml", RAMLValidator.INSTANCE);
 
 		private final String extension;
 		private final Validator validator;

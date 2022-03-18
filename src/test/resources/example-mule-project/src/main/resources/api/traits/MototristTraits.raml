@@ -1,0 +1,71 @@
+#%RAML 1.0 Library
+usage: Use these traits for motorist api
+
+traits:
+  motoristSearchQueryParam:
+    queryParameters:
+      middleName?: 
+        type: string
+        example: "JAMES"
+        maxLength: 50
+
+      emailAddress?: 
+        type: string
+        example: "EMAIL@ADDRESS.COM"
+        
+      lastName?: 
+        type: string
+        example: "DODDS"
+        maxLength: 50
+        
+      firstName?: 
+        type: string
+        example: "STEVEN"
+        maxLength: 50
+        
+      pageSize?: 
+        type: string
+        example: "1"
+
+      pageNumber?: 
+        type: string
+        example: "1"
+
+      recordCount?:
+        type: string
+        example: "2"
+
+      searchMatchToken?:
+        type: string
+        example: "SVR1.6EVKL"
+
+      partyIdentificationValue?:
+        type: string
+        example: "4"
+      
+      partyIdentificationType?:
+        type: string
+        example: "EMP ID"
+
+      phoneNumber?:
+        type: string
+        example: "6147977777"
+
+      addressLine1?:
+        type: string
+        example: "777 ADDRESS"
+        maxLength: 200 
+
+      city?:
+        type: string
+        example: "WESTERVILLE"
+        maxLength: 50 
+
+      country?:
+        type: string
+        example: "US"
+
+      partyType?:
+        type: string
+        example: "Person"
+

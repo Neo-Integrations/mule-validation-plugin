@@ -1,6 +1,9 @@
 package org.neointegration.mule.validation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.DirectoryFileFilter;
+import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.neointegration.mule.validation.domain.Result;
 import org.neointegration.mule.validation.domain.Rule;
 import org.neointegration.mule.validation.domain.Status;
@@ -105,22 +108,6 @@ public class PluginUtil {
         return false;
     }
 
-    static Result createResultObject(File xmlFile,
-                                     Rule rule,
-                                     NodeList nodes,
-                                     boolean passed) {
-        Result result = new Result();
-        result.setFileName(xmlFile.getName());
-
-        if(nodes == null) result.setNumberOfNode(1);
-        else result.setNumberOfNode(nodes.getLength());
-
-        if(passed) result.setStatus(Status.PASSED);
-        else result.setStatus(Status.FAILED);
-
-        return result;
-    }
-
     static Object eval(Object obj, String... jexlExpressions) {
         Object previous = obj;
         try {
@@ -191,5 +178,48 @@ public class PluginUtil {
 
         Schema schema = SchemaLoader.load(jsonSchema);
         schema.validate(jsonArray);
+    }
+
+
+    public static void main(String[] args) {
+        List<File> files  = listFiles("/Users/mhaque/AnypointStudio/belron/belron-api-template-v1");
+        List<File> filterList = filter(files, "(.*)\\.raml", null);
+        for(File file : filterList) {
+            System.out.println("File:=>" + file.getAbsolutePath());
+        }
+    }
+
+    private static List<File> filter(List<File> files, String inlcudeFileNamePattern, String excludeFileNamePattern) {
+        List<File> filterList = new ArrayList<>();
+        for (File file : files) {
+            if(file.getName().matches(inlcudeFileNamePattern)) {
+                if (PluginUtil.isNullOrEmpty(excludeFileNamePattern) ||
+                        false == file.getName().matches(excludeFileNamePattern)) {
+                    filterList.add(file);
+                }
+            }
+        }
+        return filterList;
+    }
+
+    private static List<File> listFiles(String projectDir) {
+        final List<File> listFiles = new ArrayList<File>();
+        final File dir = new File(projectDir);
+
+        final Collection<File> files = FileUtils.listFiles(dir,
+                new RegexFileFilter("^(.*)\\.(xml|raml|json)$"),
+                DirectoryFileFilter.DIRECTORY);
+
+        final String excludeDir = new StringBuilder()
+                .append(dir.getAbsolutePath())
+                .append(File.separator)
+                .append("target").toString();
+
+        for (File file : files) {
+            if (false == file.getAbsolutePath().startsWith(excludeDir)) {
+                listFiles.add(file);
+            }
+        }
+        return listFiles;
     }
 }
